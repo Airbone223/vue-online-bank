@@ -5,7 +5,7 @@
 <script>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import MainLayout from '@/layouts/MainLayout'
+import MainLayout from '@/layouts/AdminLayout'
 import AuthLayout from '@/layouts/AuthLayout'
 
 export default {
