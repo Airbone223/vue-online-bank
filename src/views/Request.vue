@@ -1,6 +1,12 @@
 <template>
   <app-loader v-if="loading"/>
+
+
+
   <app-page back title="Заявка" v-else-if="request">
+  <template #header>
+    <button class="btn danger" @click="remove">Удалить</button>
+  </template>
     <p><strong>Ф.И.О.</strong>: {{ request.fio }}</p>
     <p><strong>Телефон</strong>: {{ request.phone }}</p>
     <p><strong>Сумма</strong>: {{ currency(request.amount) }}</p>
@@ -17,7 +23,6 @@
       </select>
     </div>
     <button class="btn" @click="update" v-if="hasChanged">Обновить</button>
-    <button class="btn danger" @click="remove">Удалить</button>
   </app-page>
   <h3 v-else class="text-center text-white">
     Заявки с ID = {{ $route.params.id }} нет.
@@ -51,7 +56,7 @@ export default {
     })
     const remove = async () => {
       await store.dispatch('request/remove', route.params.id)
-      router.push('/')
+      router.push('/admin')
     }
     const update =  async () => {
       const data = {...request.value, status: status.value, id: route.params.id}

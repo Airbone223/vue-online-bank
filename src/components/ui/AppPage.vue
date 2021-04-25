@@ -1,5 +1,8 @@
 <template>
   <div class="breadcrumbs" v-if="back">
+    <router-link to="/admin" class="text-white">На главную</router-link>
+  </div>
+  <div class="breadcrumbs" v-if="backToMain">
     <router-link to="/" class="text-white">На главную</router-link>
   </div>
   <div class="card">
@@ -18,6 +21,10 @@ props: {
     required: true
   },
   back: {
+    type: Boolean,
+    default: false
+  },
+  backToMain: {
     type: Boolean,
     default: false
   }

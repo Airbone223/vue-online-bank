@@ -1,16 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Main from '../views/Main'
 import store from '../store'
+import Admin from '@/views/Admin'
 
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    name: 'Main',
+    component: Main,
     meta: {
-      layout: 'main',
-      auth: true
+      layout: 'main'
     }
   },
   {
@@ -19,21 +19,28 @@ const routes = [
     component: () => import('../views/Help.vue'),
     meta: {
       layout: 'main',
-      auth: true
-
     }
   },
   {
-    path: '/request/:id',
+    path: '/admin',
+    name: 'Admin',
+    component: Admin,
+    meta: {
+      layout: 'admin',
+      auth: true
+    }
+  },
+  {
+    path: '/admin/request/:id',
     name: 'Request',
     component: () => import('../views/Request.vue'),
     meta: {
-      layout: 'main',
+      layout: 'admin',
       auth: true
     }
   },
   {
-    path: '/auth',
+    path: '/admin/auth',
     name: 'Auth',
     component: () => import('../views/Auth.vue'),
     meta: {
@@ -54,7 +61,7 @@ const requireAuth = to.meta.auth
   if (requireAuth && store.getters['auth/isAuthenticated']) {
     next()
   } else if (requireAuth && !store.getters['auth/isAuthenticated']) {
-    next('/auth?message=auth')
+    next('/admin/auth?message=auth')
   } else {
     next()
   }

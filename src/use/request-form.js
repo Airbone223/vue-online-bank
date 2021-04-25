@@ -17,7 +17,7 @@ export function useRequestForm(fn) {
     const {value: amount, errorMessage: aError, handleBlur: aBlur} = useField('amount',
         yup.number('Вы ввели не число').required('Введите сумму').min(0, 'Сумма не может быть меньше 0')
         )
-    const {value: status} = useField('status', )
+    const {value: status} = useField('status')
 
     const onSubmit = handleSubmit(fn)
 

@@ -5,12 +5,16 @@ export default {
     namespaced: true,
     state() {
         return {
-            requests: []
+            requests: [],
+            messages: []
         }
     },
     getters: {
         requests(state) {
             return state.requests
+        },
+        messages(state) {
+            return state.messages
         }
     },
     mutations: {
@@ -19,14 +23,27 @@ export default {
         },
         addRequest(state, request) {
             state.requests.push(request)
+        },
+        addMessage(state, message) {
+            state.messages.push(message)
+        },
+        removeMessage(state, id) {
+            state.messages = state.messages.filter(msg => msg.id !== id)
         }
-
+        ,
+        setMessages(state, messages) {
+            state.messages = messages
+        }
     },
     actions: {
         async create({commit, dispatch}, payload) {
             try {
-                const token = store.getters['auth/token']
-                const {data} = await axios.post(`/requests.json?auth=${token}`, payload)
+                const {data} = await axios.post(`/requests.json`, payload)
+                const message = {
+                    fio: payload.fio
+                }
+                const messageData = await axios.post(`/messages.json`, message)
+                commit('addMessage', {...message, id: messageData.data.name})
                 commit('addRequest', {...payload, id: data.name})
                 dispatch('setMessage', {
                     value: 'Заявка успешно создана',
@@ -50,6 +67,16 @@ export default {
                     value: e.message,
                     type: 'danger'
                 }, {root: true})
+            }
+        },
+        async loadMessages({commit}) {
+            try {
+                const token = store.getters['auth/token']
+                const {data} = await axios.get(`/messages.json?auth=${token}`)
+                const messages = Object.keys(data).map(key => ({id: key, ...data[key]}))
+                commit('setMessages', messages)
+            } catch (e) {
+
             }
         },
         async loadById({dispatch}, id) {
@@ -77,6 +104,15 @@ export default {
                     value: e.message,
                     type: 'danger'
                 }, {root: true})
+            }
+        },
+        async removeMsg({commit},id) {
+            try {
+                console.log("req", id)
+                const token = store.getters['auth/token']
+                await axios.delete(`/messages/${id}.json?auth=${token}`)
+                commit('removeMessage', id)
+            } catch (e) {
             }
         },
         async update({dispatch}, request) {

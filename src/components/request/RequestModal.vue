@@ -18,16 +18,10 @@
       <small v-if="aError">{{ aError }}</small>
     </div>
 
-    <div class="form-control">
-      <label for="status">Статус</label>
-      <select name="status" id="status" v-model="status">
-        <option value="done">Завершен</option>
-        <option value="cancelled">Отменен</option>
-        <option value="active">Активен</option>
-        <option value="pending">Выполняется</option>
-      </select>
-    </div>
-    <button class="btn primary" :disabled="isSubmitting">Создать</button>
+
+      <input type="hidden" name="status" id="status" v-model="status">
+
+    <button class="btn primary" :disabled="isSubmitting">Оформить</button>
   </form>
 </template>
 
